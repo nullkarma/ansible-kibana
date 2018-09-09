@@ -1,0 +1,32 @@
+---
+
+- name: Install
+  yum:
+    name: "{{ kibanas_base_url }}/kibana-{{ kibana.version }}-{{ ansible_architecture }}.rpm"
+    state: present
+
+- name: Create directories
+  file:
+    state: directory
+    path: "{{ item }}"
+    owner: kibana
+    group: kibana
+  loop:
+  - "{{ kibana_pid_dir }}"
+  - "{{ kibana_log_dir }}"
+- name: Configure
+  template:
+    src: kibana.yml.j2
+    dest: "{{ kibana_conf_dir }}/kibana.yml"
+
+- name: Create systemd unit
+  template:
+    src: kibana.systemd.j2
+    dest: /etc/systemd/system/kibana.service
+  notify:
+
+- name: Enable Kibana
+  systemd:
+    name: kibana
+    enabled: yes
+

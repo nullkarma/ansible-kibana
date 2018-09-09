@@ -1,0 +1,9 @@
+---
+
+kibana_version: 6.4.0
+kibana_conf_dir: /etc/kibana
+kibana_log_dir: /var/log/kibana
+kibana_pid_dir: /var/run/kibana
+
+kibana_config:
+  elasticsearch.url: http://127.0.0.1:9200

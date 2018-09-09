@@ -1,0 +1,6 @@
+---
+
+- name: Start Kibana
+  systemd:
+    name: kibana
+    state: started
