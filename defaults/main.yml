@@ -6,4 +6,6 @@ kibana_log_dir: /var/log/kibana
 kibana_pid_dir: /var/run/kibana
 
 kibana_config:
+  server.host: 0.0.0.0
   elasticsearch.url: http://127.0.0.1:9200
+  xpack.monitoring.enabled: true
