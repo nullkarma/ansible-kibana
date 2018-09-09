@@ -19,14 +19,20 @@
   template:
     src: kibana.yml.j2
     dest: "{{ kibana_conf_dir }}/kibana.yml"
+  notify: start kibana
 
 - name: Create systemd unit
   template:
     src: kibana.systemd.j2
     dest: /etc/systemd/system/kibana.service
-  notify:
+  register: kibana
 
-- name: Enable Kibana
+- systemd:
+    name: kibana
+    daemon_reload: yes
+  when: kibana.changed
+
+- name: enable Kibana
   systemd:
     name: kibana
     enabled: yes
