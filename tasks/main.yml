@@ -2,7 +2,7 @@
 
 - name: Install
   yum:
-    name: "{{ kibanas_base_url }}/kibana-{{ kibana.version }}-{{ ansible_architecture }}.rpm"
+    name: "{{ kibana_base_url }}/kibana-{{ kibana_version }}-{{ ansible_architecture }}.rpm"
     state: present
 
 - name: Create directories
@@ -14,6 +14,7 @@
   loop:
   - "{{ kibana_pid_dir }}"
   - "{{ kibana_log_dir }}"
+
 - name: Configure
   template:
     src: kibana.yml.j2
