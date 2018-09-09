@@ -19,7 +19,7 @@
   template:
     src: kibana.yml.j2
     dest: "{{ kibana_conf_dir }}/kibana.yml"
-  notify: start kibana
+  notify: restart kibana
 
 - name: Create systemd unit
   template:
