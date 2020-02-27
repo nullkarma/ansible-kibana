@@ -1,11 +1,21 @@
 ---
 
-kibana_version: 6.4.0
+kibana_version: 7.6.0
 kibana_conf_dir: /etc/kibana
 kibana_log_dir: /var/log/kibana
 kibana_pid_dir: /var/run/kibana
 
-kibana_config:
-  server.host: 0.0.0.0
-  elasticsearch.url: http://127.0.0.1:9200
-  xpack.monitoring.enabled: true
+kibana_enable_ssl: false
+kibana_enable_elasticsearch_ssl: false
+
+kibana_ssl_certificate: ""
+kibana_ssl_certificate_authority: ""
+kibana_ssl_key: ""
+kibana_ssl_key_password: ""
+
+kibana_es_ssl_certificate: ""
+kibana_es_ssl_certificate_authority: ""
+kibana_es_ssl_key: ""
+kibana_es_ssl_key_password: ""
+
+kibana_config: {}

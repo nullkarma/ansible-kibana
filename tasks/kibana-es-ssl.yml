@@ -1,0 +1,38 @@
+---
+
+- name: ensure certificate directory exists
+  become: yes
+  file:
+    dest: "{{ kibana_ssl_certificate_path }}"
+    state: directory
+    owner: root
+    group: "{{ kibana_group }}"
+    mode: "750"
+
+- name: Upload SSL/TLS key and certificate
+  become: yes
+  copy:
+    src: "{{ item }}"
+    dest: "{{ kibana_ssl_certificate_path }}/{{ item | basename }}"
+    owner: "{{ kibana_user }}"
+    group: "{{ kibana_group }}"
+    mode: "640"
+  with_items:
+    - "{{ kibana_es_ssl_key }}"
+    - "{{ kibana_es_ssl_certificate }}"
+  when: kibana_es_ssl_key and kibana_es_ssl_certificate
+  #Restart if these change
+  notify: restart kibana
+  register: copy_certificates
+
+- name: Upload SSL Certificate Authority
+  become: yes
+  copy:
+    src: "{{ kibana_es_ssl_certificate_authority }}"
+    dest: "{{ kibana_ssl_certificate_path }}/{{ kibana_es_ssl_certificate_authority | basename }}"
+    owner: "{{ kibana_user }}"
+    group: "{{ kibana_group }}"
+    mode: "640"
+  #Restart if this changes
+  notify: restart kibana
+  when: (kibana_es_ssl_certificate_authority is defined) and (kibana_es_ssl_certificate_authority|length > 0)

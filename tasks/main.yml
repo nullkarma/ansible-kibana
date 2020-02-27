@@ -2,35 +2,37 @@
 
 - name: Install
   yum:
-    name: "{{ kibana_base_url }}/kibana-{{ kibana_version }}-{{ ansible_architecture }}.rpm"
+    name: "kibana-{{ kibana_version }}-1.{{ ansible_architecture }}"
     state: present
 
 - name: Create directories
   file:
     state: directory
     path: "{{ item }}"
-    owner: kibana
-    group: kibana
+    owner: "{{ kibana_user }}"
+    group: "{{ kibana_group }}"
   loop:
-  - "{{ kibana_pid_dir }}"
   - "{{ kibana_log_dir }}"
+  - "{{ kibana_pid_dir }}"
+  - "{{ kibana_data_dir }}"
+
+- name: include kibana-ssl.yml
+  include: kibana-ssl.yml
+  when: kibana_enable_ssl
+  tags:
+  - ssl
+
+- name: include kibana-es-ssl.yml
+  include: kibana-ssl.yml
+  when: kibana_enable_elasticsearch_ssl
+  tags:
+  - ssl
 
 - name: Configure
   template:
     src: kibana.yml.j2
     dest: "{{ kibana_conf_dir }}/kibana.yml"
   notify: restart kibana
-
-- name: Create systemd unit
-  template:
-    src: kibana.systemd.j2
-    dest: /etc/systemd/system/kibana.service
-  register: kibana
-
-- systemd:
-    name: kibana
-    daemon_reload: yes
-  when: kibana.changed
 
 - name: enable Kibana
   systemd:

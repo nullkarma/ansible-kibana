@@ -1,5 +1,23 @@
 {{ kibana_config | to_nice_yaml }}
 
 pid.file: {{ kibana_pid_dir }}/kibana.pid
+path.data: {{ kibana_data_dir }}
 
 logging.dest: {{ kibana_log_dir }}/kibana.log
+
+{% if kibana_enable_elasticsearch_ssl %}
+elasticsearch.ssl.certificate: "{{ kibana_ssl_certificate_path }}/{{ kibana_es_ssl_certificate | basename }}"
+elasticsearch.ssl.key: "{{ kibana_ssl_certificate_path }}/{{ kibana_es_ssl_key | basename }}"
+elasticsearch.ssl.keyPassphrase: "{{ kibana_es_ssl_key_password }}"
+elasticsearch.ssl.certificateAuthorities:
+- "{{ kibana_ssl_certificate_path }}/{{ kibana_es_ssl_certificate_authority | basename }}"
+{% endif %}
+
+{% if kibana_enable_ssl %}
+server.ssl.enabled: true
+server.ssl.certificateAuthorities:
+- "{{ kibana_ssl_certificate_path }}/{{ kibana_ssl_certificate_authority | basename }}"
+server.ssl.certificate: "{{ kibana_ssl_certificate_path }}/{{ kibana_ssl_certificate | basename }}"
+server.ssl.key: "{{ kibana_ssl_certificate_path }}/{{ kibana_ssl_key | basename }}"
+server.ssl.keyPassphrase: "{{ kibana_ssl_key_password }}"
+{% endif %}

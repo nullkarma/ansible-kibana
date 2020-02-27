@@ -1,2 +1,6 @@
 ---
-# vars file for kibana
+
+kibana_user: kibana
+kibana_group: kibana
+
+kibana_ssl_certificate_path: "{{ kibana_conf_dir }}/certs"
