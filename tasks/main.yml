@@ -23,7 +23,7 @@
   - ssl
 
 - name: include kibana-es-ssl.yml
-  include: kibana-ssl.yml
+  include: kibana-es-ssl.yml
   when: kibana_enable_elasticsearch_ssl
   tags:
   - ssl
