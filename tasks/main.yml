@@ -4,6 +4,7 @@
   yum:
     name: "kibana-{{ kibana_version }}-1.{{ ansible_architecture }}"
     state: present
+  notify: restart kibana
 
 - name: Create directories
   file:
